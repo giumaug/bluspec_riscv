@@ -1,4 +1,0 @@
-`define SDRAMMemBase	'h80000000
-
-`define INST_CACHE_SIZE	'h???
-`define DATA_CACHE_SIZE	'h???
