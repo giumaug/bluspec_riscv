@@ -1,18 +1,23 @@
 package Stage1;
 
-	`include "Soc.defines"
-	import Memory::*;
-	import DataTypes::*;
+	`include "Constants.defines"
+	import Cache::*;
+	import PipeRegs::*;
 	
-	(*synthesize*)
-	module mkStage1#(IfId ifId, Wire#(Bool) bTaken, Wire#((Bit#(32)) bPc) (Empty);	
-		Mem instMem <- mkMem(INST_CACHE_SIZE);
-		Reg#(Bit#(32)) pc <- mkReg(BOOT_ADDRESS);
+	module mkStage1 #(IfId ifId, Bool bTaken, Bit#(32) bPc) (Empty);
+		Integer payloadSize =  `PAYLOAD_SIZE;
+		Integer size = `INST_CACHE_SIZE;
+		Integer payload[payloadSize];
+        //Expand payload here
+        `PAYLOAD
 	
+		Cache cache <- mkCache(payload, payloadSize, size);
+		Reg#(Bit#(32)) pc <- mkReg(`BOOT_ADDRESS);
+		
 		rule fetch;
-			Bit#(32) instr = instr.read(pc);
+			Bit#(32) instr = cache.read(pc);
 			if (bTaken) pc <= bPc;
-			else pc <= pc + 4;
+			else pc <= pc + 1;
 			ifId.wPc(pc);
 			ifId.wInstr(instr);
 		endrule

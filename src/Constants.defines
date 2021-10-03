@@ -1,7 +1,19 @@
-#CACHE 10MB
-`define INST_CACHE_SIZE	'hA00000
-`define DATA_CACHE_SIZE	'hA00000
+//10 instruction and data caches
+`define INST_CACHE_SIZE	'h280
+`define DATA_CACHE_SIZE	'h280
 
 `define BOOT_ADDRESS	'h000000
+
+`define PAYLOAD_SIZE 10
+`define PAYLOAD payload[0] = 0; \
+                payload[1] = 1; \
+                payload[2] = 2; \
+                payload[3] = 3; \
+                payload[4] = 4; \
+                payload[5] = 5; \
+                payload[6] = 6; \
+                payload[7] = 7; \
+                payload[8] = 8; \
+                payload[9] = 9;
 
 

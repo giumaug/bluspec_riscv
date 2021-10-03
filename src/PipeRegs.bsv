@@ -1,72 +1,74 @@
 package PipeRegs;
 
+/*
 	typedef struct {
-		Bit(7) opcode;
-		Bit(5) rd;
-		Bit(3) func3;
-		Bit(5) rs1;
-		Bit(5) rs2;
-		Bit(7) func7;
+		Bit#(7) opcode;
+		Bit#(5) rd;
+		Bit#(3) func3;
+		Bit#(5) rs1;
+		Bit#(5) rs2;
+		Bit#(7) func7;
 	} RInstr;
 	
 	typedef struct {
-		Bit(7) opcode;
-		Bit(5) rd;
-		Bit(3) func3;
-		Bit(5) rs1;
-		Bit(12) imm;
+		Bit#(7) opcode;
+		Bit#(5) rd;
+		Bit#(3) func3;
+		Bit#(5) rs1;
+		Bit#(12) imm;
 	} IInstr;
 	
 	typedef struct {
-		Bit(7) opcode;
-		Bit(5) imm1;
-		Bit(3) func3;
-		Bit(5) rs1;
-		Bit(5) rs2;
-		Bit(7) imm2;
+		Bit#(7) opcode;
+		Bit#(5) imm1;
+		Bit#(3) func3;
+		Bit#(5) rs1;
+		Bit#(5) rs2;
+		Bit#(7) imm2;
 	} SInstr;
 	
 	typedef struct {
-		Bit(7) opcode;
-		Bit(5) rd;
-		Bit(20) imm;
+		Bit#(7) opcode;
+		Bit#(5) rd;
+		Bit#(20) imm;
 	} UInstr;
 	
 	typedef union tagged {
-		RInstr r;
-		IInstr i;
-		SInstr s;
-		UInstr u;
+		RInstr R;
+		IInstr I;
+		SInstr S;
+		UInstr U;
 	} Instr;
+*/
 
 	interface IfId;
-		method Reg#(Bit(32)) rPc();
-		method action wPc(Reg#(Bit(32)) _pc);
-		method Instr rInstr();
-		method action wInstr(Bit(32) _instr);
+		method Reg#(Bit#(32)) rPc();
+		method Action wPc(Reg#(Bit#(32)) _pc);
+		method Bit#(32) rInstr();
+		method Action wInstr(Bit#(32) _instr);
 	endinterface: IfId
 
-	module mkIfId(ifId);
-		Reg#(Bit(32)) pc;
-		Bit(32) instr;
+	module mkIfId(IfId);
+		Reg#(Bit#(32)) pc <- mkReg(0);
+		Reg#(Bit#(32)) instr <- mkReg(0);
 		
-		method Reg#(Bit(32)) rPc();
+		method Reg#(Bit#(32)) rPc();
 			return pc;
 		endmethod
 		
-		method action wPc(Reg#(Bit(32)) _pc);
+		method Action wPc(Reg#(Bit#(32)) _pc);
 			pc <= _pc;
 		endmethod
 		
-		method Instr rInstr();
+		method Bit#(32) rInstr();
 			return instr;
 		endmethod
 		
-		method action wInstr(Bit(32) _instr);
-			instr = _instr;
+		method Action wInstr(Bit#(32) _instr);
+			instr <= _instr;
 		endmethod
 		
-	endmodule: mkIfId;
+	endmodule: mkIfId
 
 	
 /*		
