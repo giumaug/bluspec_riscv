@@ -6,10 +6,11 @@ package BluespecRiscv;
 	(*synthesize*)
 	module mkRiscv(Empty);
         Reg#(int) counter <- mkReg (0);
-		Reg#(Bool) bTaken <- mkReg(False); 
-		Reg#(Bit#(32)) bPc <- mkReg(0); 
+		Wire#(Bool) bTaken <- mkWire(); 
+		Wire#(Bit#(32)) bPc <- mkWrire(); 
 		IfId ifId <- mkIfId();
 		mkStage1(ifId, bTaken, bPc);
+		mkStage2(ifId, bTaken, bPc);
 	
 		rule testbench;
 			$display("counter is = %0d", counter);

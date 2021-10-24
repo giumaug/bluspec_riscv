@@ -4,7 +4,7 @@ package Stage1;
 	import Cache::*;
 	import PipeRegs::*;
 	
-	module mkStage1 #(IfId ifId, Bool bTaken, Bit#(32) bPc) (Empty);
+	module mkStage1 #(IfId ifId, Wire#(Bool) bTaken, Wire(Bit#(32)) bPc) (Empty);
 		Integer payloadSize =  `PAYLOAD_SIZE;
 		Integer size = `INST_CACHE_SIZE;
 		Integer payload[payloadSize];
@@ -16,10 +16,16 @@ package Stage1;
 		
 		rule fetch;
 			Bit#(32) instr = cache.read(pc);
-			if (bTaken) pc <= bPc;
-			else pc <= pc + 1;
-			ifId.wPc(pc);
-			ifId.wInstr(instr);
+			if (bTaken) begin
+				pc <= bPc;
+				ifId.wPc(0);
+				ifId.wInstr(0);
+			end	
+			else begin 
+				pc <= pc + 1;
+				ifId.wPc(pc);
+				ifId.wInstr(instr);
+			end
 		endrule
 		
 	endmodule: mkStage1
