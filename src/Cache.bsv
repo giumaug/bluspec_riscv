@@ -16,11 +16,11 @@ package Cache;
 		end 
 		
 		method (Bit#(32)) read(Bit#(32) address);
-			return mem[address];  
+			return mem[(address / 4)];  
 		endmethod
 		
 		method Action write(Bit#(32) address, Bit#(32) value);
-			mem[address] <= value;
+			mem[(address / 4)] <= value;
 		endmethod
 	endmodule: mkCache
 	

@@ -20,6 +20,8 @@ package PipeRegs;
 		method Action wOpcode(Reg#(Bit#(5)) _opcode);
 		method Reg#(Bit#(3) rfunc();
 		method Action wfunc(Reg#(Bit#(3) _func);
+		method Reg#(Bit#(32)) rPc();
+		method Action wPc(Reg#(Bit#(32)) _pc);
 	endinterface: IfEx
 
 	module mkIfId(IfId);

@@ -5,7 +5,7 @@ package Stage2;
 	import PipeRegs::*;
 	import Utils::*;
 	
-	module mkStage2 #(IfId ifId, Wire#(Bool) bTaken,Wire#(Bit#(32)) bPc) (Empty);
+	module mkStage2 #(IfId ifId, IdEx idEx, Wire#(Bool) bTaken,Wire#(Bit#(32)) bPc) (Empty);
 	
 		RegFile regFile <- mkRegFile();
 		
@@ -32,15 +32,15 @@ package Stage2;
 				`JAL: begin
 					Bit#(20) imm = brImm(word) << 1;
 					if (imm[20] == 0) bPc <= ifId.rPc() + extend(imm);
-					else bPc <= ifId.rPc() - extend(((~imm) & 4094));
+					else bPc <= ifId.rPc() - extend(((~imm) & 4094));--------------da qui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				 	bTaken <= True;
 				 	regFile.write(rdNum, (ifId.rPc() + 4));
 				 	idEx.wImm(signExtend(imm));
 			    end
 			     
 			   	`JALR: begin
-			     	Bit#(12) imm = condBrImm(word) << 1;
-			     	if (imm[12] == 0) bPc <= rs1 + extend(imm);
+			     	Bit#(13) imm = condBrImm(word) << 1;
+			     	if (imm[13] == 0) bPc <= rs1 + extend(imm);
 			     	else bPc <= rs1 - extend(((~imm) + 1));
 			        bTaken <= True;
 			        regFile.write(rdNum, (ifId.rPc() + 4));
@@ -48,7 +48,7 @@ package Stage2;
 			    end
 			     
 				`BRANCH: begin
-			     	bPc <= ifId.rPc() + condBrImm(word);
+			     	bPc <= ifId.rPc() + signExtend(condBrImm(word) << 1);
 					case (func) 
 						`BEQ: begin
 							if (rs1 == rs2) bTaken <= True;

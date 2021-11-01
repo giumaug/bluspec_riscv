@@ -21,8 +21,9 @@ package Stage1;
 				ifId.wPc(0);
 				ifId.wInstr(0);
 			end	
-			else begin 
-				pc <= pc + 1;
+			else begin
+				//Branch wants current pc.It is ok because increment applies at the next clock.
+				pc <= pc + 4;
 				ifId.wPc(pc);
 				ifId.wInstr(instr);
 			end
