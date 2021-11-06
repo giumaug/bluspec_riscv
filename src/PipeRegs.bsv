@@ -29,6 +29,8 @@ package PipeRegs;
 	interface ExMem;
 		method Reg#(Bit#(32)) rRdNum();
 		method Action wRdNum(Reg#(Bit#(32)) _rdNum);
+		method Reg#(Bit#(32)) rAluOut();
+		method Action wAluOut(Reg#(Bit#(32)) _rdNum);
 	endinterface: ExMem
 
 	module mkIfId(IfId);
@@ -51,7 +53,6 @@ package PipeRegs;
 		method Action wInstr(Bit#(32) _instr);
 			instr <= _instr;
 		endmethod
-		
 	endmodule: mkIfId
 	
 	module mkIdEx(IdEx);
@@ -118,5 +119,27 @@ package PipeRegs;
 		method Action wFunc(Reg#(Bit#(3)) _func);
 			func <= _func;
 		endmethod
+	endmodule: mkIdEx
+		
+	module mkExMem(ExMem);
+		Reg#(Bit#(32)) rdNum <- mkReg(0);
+		Reg#(Bit#(32)) aluOut <- mkReg(0);
+			
+		method Reg#(Bit#(32)) rRdNum();
+			return rdNum;
+		endmethod
+		
+		method Action wRdNum(Reg#(Bit#(32)) _rdNum);
+			rdNum <= _rdNum;
+		endmethod
+		
+		method Reg#(Bit#(32)) rAluOut();
+			return aluOut;
+		endmethod
+		
+		method Action wAluOut(Reg#(Bit#(32)) _aluOut);
+			aluOut <= _aluOut;
+		endmethod
+	endmodule: mkExMem
 
 endpackage

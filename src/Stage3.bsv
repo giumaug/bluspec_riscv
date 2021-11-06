@@ -7,16 +7,16 @@ package Stage3;
 	module mkStage3 #(IdEx idEx, ExMem exMem) (Empty);
 	
 		rule execute;
+			Int#(32) rs1 = unpack(signExtend(idEx.rRs1()));
+			Int#(32) imm12 = unpack(signExtend(idEx.rImm12()));
+			Unt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
+			Unt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
+			UInt#(32) uImm12 = unpack(zeroExtend(idEx.rImm12()));
+			Int#(32) aluOut;
 		
 			case (opcode)
 			
 				`OP-IMM: begin
-					Int#(32) rs1 = unpack(signExtend(idEx.rRs1()));
-					Int#(32) imm12 = unpack(signExtend(idEx.rImm12()));
-					Unt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
-					Unt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
-					UInt#(32) uImm12 = unpack(zeroExtend(idEx.rImm12()));
-					Int#(32) aluOut;
 					case (func)
 					 
 						`ADDI: begin
@@ -114,13 +114,10 @@ package Stage3;
 				`AUIPC: begin
 					aluOut = unpack((idEx.rImm20 << 12) + );
 				end
-				
-				
-				
-				`AUIPC: begin
-				end
 			endcase
+			
+			exMem.wAluOut(aluOut);
+			exMem.wRdNum(idEx.rdNum()));
 		endrule
-		
 	endmodule: mkStage3
 endpackage
