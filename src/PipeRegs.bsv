@@ -14,8 +14,10 @@ package PipeRegs;
 		method Action wRs2(Reg#(Bit#(32)) _rs2);
 		method Reg#(Bit#(32)) rRdNum();
 		method Action wRdNum(Reg#(Bit#(32)) _rdNum);
-		method Reg#(Bit#(32)) rImm();
-		method Action wImm(Reg#(Bit#(32)) _imm);
+		method Reg#(Bit#(12)) rImm12();
+		method Action wImm12(Reg#(Bit#(12)) _imm);
+		method Reg#(Bit#(20)) rImm20();
+		method Action wImm20(Reg#(Bit#(20)) _imm);
 		method Reg#(Bit#(5) rOpcode();
 		method Action wOpcode(Reg#(Bit#(5)) _opcode);
 		method Reg#(Bit#(3) rfunc();
@@ -23,8 +25,14 @@ package PipeRegs;
 		method Reg#(Bit#(32)) rPc();
 		method Action wPc(Reg#(Bit#(32)) _pc);
 	endinterface: IfEx
+	
+	interface ExMem;
+		method Reg#(Bit#(32)) rRdNum();
+		method Action wRdNum(Reg#(Bit#(32)) _rdNum);
+	endinterface: ExMem
 
 	module mkIfId(IfId);
+		//pc refers to current instruction
 		Reg#(Bit#(32)) pc <- mkReg(0);
 		Reg#(Bit#(32)) instr <- mkReg(0);
 		
@@ -50,7 +58,8 @@ package PipeRegs;
 		Reg#(Bit#(32)) rs1 <- mkReg(0);
 		Reg#(Bit#(32)) rs2 <- mkReg(0);
 		Reg#(Bit#(32)) rdNum <- mkReg(0);
-		Reg#(Bit#(32)) imm <- mkReg(0);
+		Reg#(Bit#(12)) imm12 <- mkReg(0);
+		Reg#(Bit#(20)) imm20 <- mkReg(0);
 		Reg#(Bit#(5)) opcode <- mkReg(0);
 		Reg#(Bit#(3)) func <- mkReg(0);
 		
@@ -78,12 +87,20 @@ package PipeRegs;
 			rdNum <= _rdNum;
 		endmethod
 		
-		method Reg#(Bit#(32)) rImm();
-			return imm;
+		method Reg#(Bit#(12)) rImm12();
+			return imm12;
 		endmethod
 		
-		method Action wImm(Reg#(Bit#(32)) _imm);
-			imm <= _imm;
+		method Action wImm(Reg#(Bit#(12)) _imm12);
+			imm12 <= _imm12;
+		endmethod
+		
+		method Reg#(Bit#(20)) rImm20();
+			return imm20;
+		endmethod
+		
+		method Action wImm(Reg#(Bit#(20)) _imm20);
+			imm20 <= _imm20;
 		endmethod
 		
 		method Reg#(Bit#(5)) rOpcode();

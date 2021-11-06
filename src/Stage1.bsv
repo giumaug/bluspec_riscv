@@ -27,6 +27,9 @@ package Stage1;
 				ifId.wPc(pc);
 				ifId.wInstr(instr);
 			end
+			
+			ifId.wPc(pc);
+			ifId.wInstr(instr);
 		endrule
 		
 	endmodule: mkStage1
