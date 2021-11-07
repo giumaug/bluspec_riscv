@@ -7,54 +7,56 @@ package Stage3;
 	module mkStage3 #(IdEx idEx, ExMem exMem) (Empty);
 	
 		rule execute;
+			Int#(32) rs1 = unpack(signExtend(idEx.rRs1()));
+			Int#(32) imm12 = unpack(signExtend(idEx.rImm12()));
+			Unt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
+			Unt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
+			UInt#(32) uImm12 = unpack(zeroExtend(idEx.rImm12()));
+			Bit#(5) opcode = idEx.rOpcode();
+			Bit#(3) func = idEx.rfunc(func);
+			Int#(32) aluOut;
 		
 			case (opcode)
 			
 				`OP-IMM: begin
-					Int#(32) rs1 = unpack(signExtend(idEx.rRs1()));
-					Int#(32) imm = unpack(signExtend(idEx.rImm()));
-					Unt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
-					Unt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
-					UInt#(32) uImm = unpack(zeroExtend(idEx.rImm()));
-					Int#(32) aluOut;
 					case (func)
 					 
 						`ADDI: begin
-							aluOut = rs1 + imm;
+							aluOut = rs1 + imm12;
 						end
 						
 						`SLTI: begin
-							if (rs1 < imm) aluOut = 1;
+							if (rs1 < imm12) aluOut = 1;
 							else aluOut = 0;
 						end
 						
 						`SLTIU: begin
-							if (uRs1 < uImm) aluOut = 1;
+							if (uRs1 < uImm12) aluOut = 1;
 							else aluOut = 0; 
 						end
 						
 						`ANDI: begin
-							aluOut = rs1 & imm;
+							aluOut = rs1 & imm12;
 						end
 						
 						`ORI: begin
-							aluOut = rs1 | imm;
+							aluOut = rs1 | imm12;
 						end
 						
 						`XORI: begin
-							aluOut = rs1 ^ imm;
+							aluOut = rs1 ^ imm12;
 						end
 						
 						`SLLI: begin
-							aluOut = rs1 << imm[4:0];
+							aluOut = rs1 << imm12[4:0];
 						end
 						
 						`SRLI: begin
-							aluOut = rs1 >> imm[4:0];
+							aluOut = rs1 >> imm12[4:0];
 						end
 						
 						`SRAI: begin
-							aluOut = (rs1 >> imm[4:0]) | (rs1[31:31] << 31);
+							aluOut = (rs1 >> imm12[4:0]) | (rs1[31:31] << 31);
 						end
 					endcase
 				end
@@ -108,25 +110,26 @@ package Stage3;
 				end 
 				
 				`LUI: begin
-					Bit#(32) tmp = signExtend(idEx.rImm());
-					if (tmp[31] == 0) aluOut = unpack(tmp << 12);
-					else begin
-						tmp = ~tmp & 
-					end
-					aluOut = unpack(tmp);
+					aluOut = unpack(idEx.rImm20 << 12);
 				end
 				
 				`AUIPC: begin
-					Bit#(32) tmp = signExtend(idEx.rImm());
-					aluOut = idEx.rPc()
+					aluOut = unpack((idEx.rImm20 << 12) + );
 				end
 				
-				
-				
-				`AUIPC: begin
+				`LOAD: begin
+					aluOut = rs1 + imm12;
 				end
+				
+				`STORE: begin
+					aluOut = rs1 + imm12;
+				end		
 			endcase
+			
+			exMem.wAluOut(aluOut);
+			exMem.wRdNum(idEx.rdNum()));
+			exMem.wRs1(idEx.rRs1);
+			exMem.wRs2(idEx.rRs2);
 		endrule
-		
 	endmodule: mkStage3
 endpackage

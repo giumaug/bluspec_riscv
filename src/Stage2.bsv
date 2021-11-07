@@ -19,37 +19,30 @@ package Stage2;
 			Int#(32) rs1 = regFile.read1(rs1Num);
 			Int#(32) rs2 = regFile.read2(rs2Num);
 			Int#(11) instr = {func, opcode};
-		
-			idEx.wRs1(rs1);
-			idEx.wRs1(rs2);
-			idEx.wRdNum(rdNum);
-			idEx.wOpcode(opcode);
-			idEx.wfunc(func);		
+			Bit#(12) imm12 = imm12(word);
+			Bit#(20) imm20 = imm20(word);
 			
 			//JAL AND JALR: https://stackoverflow.com/questions/59150608/offset-address-for-jal-and-jalr-instrctions-in-risc-v
 			case (opcode)
 			
 				`JAL: begin
 					//Note: if imm is two complement negative number, the positive value is zeroExtend( ~ (imm - 1))
-					Bit#(21) imm = brImm(word) << 1;
-					if (imm[21] == 0) bPc <= ifId.rPc() + extend(imm);
-					else bPc <= ifId.rPc() - zeroExtend( ~ (imm - 1));
+					Bit#(21) imm21 = imm20 << 1;
+					if (imm21[21] == 0) bPc <= ifId.rPc() + extend(imm21);
+					else bPc <= ifId.rPc() - zeroExtend( ~ (imm21 - 1));
 				 	bTaken <= True;
 				 	regFile.write(rdNum, (ifId.rPc() + 4));
-				 	idEx.wImm(signExtend(imm));???
 			    end
 			     
 			   	`JALR: begin
-			     	Bit#(12) imm = condBrImm(word);
-			     	if (imm[12] == 0) bPc <= (rs1 + extend(imm)) & 4094;
-			     	else bPc <= (rs1 - zeroExtend( ~ (imm - 1))) & 4094;
+			     	if (imm[12] == 0) bPc <= (rs1 + extend(imm12)) & 4094;
+			     	else bPc <= (rs1 - zeroExtend( ~ (imm12 - 1))) & 4094;
 			        bTaken <= True;
 			        regFile.write(rdNum, (ifId.rPc() + 4));
-			        idEx.wImm(signExtend(imm));???
 			    end
 			     
 				`BRANCH: begin
-			     	bPc <= ifId.rPc() + signExtend(condBrImm(word) << 1);
+			     	bPc <= ifId.rPc() + signExtend(imm12 << 1);
 					case (func) 
 						`BEQ: begin
 							if (rs1 == rs2) bTaken <= True;
@@ -85,6 +78,14 @@ package Stage2;
 					endcase
 				end
 			endcase
+			
+			idEx.wRs1(rs1);
+			idEx.wRs1(rs2);
+			idEx.wRdNum(rdNum);
+			idEx.wOpcode(opcode);
+			idEx.wfunc(func);
+			idEx.wImm12(imm12);
+			idEx.wImm20(imm20);
 		endrule
 		
 	endmodule: mkStage2

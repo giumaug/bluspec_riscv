@@ -28,6 +28,5 @@ package Stage1;
 				ifId.wInstr(instr);
 			end
 		endrule
-		
 	endmodule: mkStage1
 endpackage
