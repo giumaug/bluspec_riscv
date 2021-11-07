@@ -30,21 +30,22 @@ package Stage2;
 			case (opcode)
 			
 				`JAL: begin
-					Bit#(20) imm = brImm(word) << 1;
-					if (imm[20] == 0) bPc <= ifId.rPc() + extend(imm);
-					else bPc <= ifId.rPc() - extend(((~imm) & 4094));--------------da qui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//Note: if imm is two complement negative number, the positive value is zeroExtend( ~ (imm - 1))
+					Bit#(21) imm = brImm(word) << 1;
+					if (imm[21] == 0) bPc <= ifId.rPc() + extend(imm);
+					else bPc <= ifId.rPc() - zeroExtend( ~ (imm - 1));
 				 	bTaken <= True;
 				 	regFile.write(rdNum, (ifId.rPc() + 4));
-				 	idEx.wImm(signExtend(imm));
+				 	idEx.wImm(signExtend(imm));???
 			    end
 			     
 			   	`JALR: begin
-			     	Bit#(13) imm = condBrImm(word) << 1;
-			     	if (imm[13] == 0) bPc <= rs1 + extend(imm);
-			     	else bPc <= rs1 - extend(((~imm) + 1));
+			     	Bit#(12) imm = condBrImm(word);
+			     	if (imm[12] == 0) bPc <= (rs1 + extend(imm)) & 4094;
+			     	else bPc <= (rs1 - zeroExtend( ~ (imm - 1))) & 4094;
 			        bTaken <= True;
 			        regFile.write(rdNum, (ifId.rPc() + 4));
-			        idEx.wImm(signExtend(imm));
+			        idEx.wImm(signExtend(imm));???
 			    end
 			     
 				`BRANCH: begin

@@ -110,7 +110,9 @@ package Stage3;
 				`LUI: begin
 					Bit#(32) tmp = signExtend(idEx.rImm());
 					if (tmp[31] == 0) aluOut = unpack(tmp << 12);
-					else 
+					else begin
+						tmp = ~tmp & 
+					end
 					aluOut = unpack(tmp);
 				end
 				
