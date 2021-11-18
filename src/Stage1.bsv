@@ -15,7 +15,7 @@ package Stage1;
 		Reg#(Bit#(32)) pc <- mkReg(`BOOT_ADDRESS);
 		
 		rule fetch;
-			Bit#(32) instr = cache.read(pc);
+			Bit#(32) instr = cache.read32(pc);
 			if (bTaken) begin
 				pc <= bPc;
 				ifId.wPc(0);
@@ -28,6 +28,5 @@ package Stage1;
 				ifId.wInstr(instr);
 			end
 		endrule
-		
 	endmodule: mkStage1
 endpackage
