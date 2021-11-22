@@ -4,7 +4,7 @@ package Stage1;
 	import Cache::*;
 	import PipeRegs::*;
 	
-	module mkStage1 #(IfId ifId, Wire#(Bool) bTaken, Wire(Bit#(32)) bPc) (Empty);
+	module mkStage1 #(IfId ifId, Wire#(Bool) bTaken, Wire(Bit#(32)) bPc, Wire#(Bool) stall) (Empty);
 		Integer payloadSize =  `PAYLOAD_SIZE;
 		Integer size = `INST_CACHE_SIZE;
 		Integer payload[payloadSize];
@@ -14,7 +14,7 @@ package Stage1;
 		Cache cache <- mkCache(payload, payloadSize, size);
 		Reg#(Bit#(32)) pc <- mkReg(`BOOT_ADDRESS);
 		
-		rule fetch;
+		rule fetch (stall == False);
 			Bit#(32) instr = cache.read32(pc);
 			if (bTaken) begin
 				pc <= bPc;

@@ -88,7 +88,16 @@ package Stage3;
 							aluOut = (rs1 >> rs2[4:0]) | (rs1[31:31] << 31);
 						end
 					endcase
-				end 
+				end
+				`JAL: begin
+					opType = 0;
+					aluOut = (ifId.rPc() + 4);
+				end
+				
+				`JALR: begin
+					opType = 0;
+					aluOut = (ifId.rPc() + 4);
+				end
 				`LUI: begin
 					opType = 0;
 					aluOut = unpack(idEx.rImm20 << 12);
@@ -108,7 +117,7 @@ package Stage3;
 			endcase
 			
 			exMem.wAluOut(aluOut);
-			exMem.wRdNum(idEx.rdNum()));
+			exMem.wRdNum(idEx.rRdNum()));
 			exMem.wRs1(idEx.rRs1);
 			exMem.wRs2(idEx.rRs2);
 			exMem.wOpType(opType);

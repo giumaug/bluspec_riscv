@@ -212,8 +212,6 @@ package PipeRegs;
 		Reg#(Bit#(32)) memOut <- mkReg(0);
 		Reg#(Bit#(5)) rdNum <- mkReg(0);
 		Reg#(Bit#(32)) aluOut <- mkReg(0);
-		Reg#(Bit#(5)) opcode <- mkReg(0);
-		Reg#(Bit#(3)) func <- mkReg(0);
 		Reg#(Bit#(1)) opType <- mkReg(0);
 		
 		method Bit#(32) rMemOut();
@@ -238,22 +236,6 @@ package PipeRegs;
 		
 		method Action wAluOut(Bit#(32) _aluOut);
 			aluOut <= _aluOut;
-		endmethod
-		
-		method Bit#(5) rOpcode();
-			return opcode;
-		endmethod
-		
-		method Action wOpcode(Bit#(5) _opcode);
-			opcode <= _opcode;
-		endmethod
-		
-		method Bit#(3) rFunc();
-			return func;
-		endmethod
-		
-		method Action wFunc(Bit#(3) _func);
-			func <= _func;
 		endmethod
 		
 		method Bit#(1) rOpType();

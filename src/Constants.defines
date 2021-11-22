@@ -1,4 +1,3 @@
-//10 instruction and data caches
 `define INST_CACHE_SIZE	'h280
 `define DATA_CACHE_SIZE	'h280
 
@@ -15,5 +14,55 @@
                 payload[7] = 7; \
                 payload[8] = 8; \
                 payload[9] = 9;
+                
+//Instruction constants
+`define BRANCH 	7'b1100011
+`define OP-IMM  7'b0010011
+`define OP      7'b0110011
+`define LOAD    7'b0000011
+`define STORE   7'b0100011
+`define JAL 	7'b1101111 
+`define JALR   	7'b1100111
+`define BEQ     3'b000  
+`define BNE     3'b001
+`define BLT   	3'b100
+`define BLTU    3'b110 
+`define BGE     3'b101
+`define BGEU    3'b111
+`define ADDI    3'b000
+`define SLTI    3'b010
+`define SLTIU   3'b011
+`define ANDI    3'b111  
+`define ORI     3'b110    
+`define XORI    3'b100  
+`define SLLI    3'b001   
+`define SRLI    6'b000101
+`define SRAI    6'b001101
+`define ADD     6'b000000   
+`define SUB     6'b010000
+`define SLT     3'b010 
+`define SLTU    3'b011   
+`define AND     3'b111   
+`define OR      3'b110    
+`define XOR     3'b100
+`define SLL     3'b001  
+`define SRL     6'b0000101   
+`define SRA     6'b1100101
+`define LUI    	6'b0110111
+`define AUIPC   6'b0010111
+`define LB      3'b000     
+`define LH      3'b001     
+`define LW      3'b010     
+`define LBU     3'b100  
+`define LHU     3'b101    
+`define SB      3'b000 
+`define SH      3'b001
+`define SW      3'b010
+
+
+
+
+
+
 
 

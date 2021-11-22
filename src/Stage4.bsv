@@ -50,7 +50,7 @@ package Stage4;
 			
 			memWb.wRdNum(memEx.rRdNum());
 			memWb.wMemOut(memOut);
-			memWOpType(memEx.rOpType());-----------------partire da pipe registri
+			memWOpType(memEx.rOpType());
 		endrule
 	endmodule: mkStage4
 endpackage

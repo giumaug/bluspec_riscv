@@ -17,19 +17,4 @@ package Utils;
 		Bit#(20) imm = {imm4, imm3, imm2, imm1};
 		return imm;
 	endfunction
-	
-	function Bool checkHazardBit#(5) rsNum, Bit#(5) rdNum, Int#(1) stageNum, IfId ifId, IdEx idEx, ExMem exMem, MedWb memWb);
-		if (stageNum == 3)
-		begin
-			if (idEx.rRdnum() == rsNum)
-			begin
-				set nop in the pipe!!!!!!!
-			end
-		end
-		
-		
-	
-	endfunction
-	
-
 endpackage
