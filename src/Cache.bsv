@@ -38,7 +38,7 @@ package Cache;
 		method (Bit#(16)) read16(Bit#(32) address);
 		    Bit#(8) val1 = mem[address];
 		    Bit#(8) val2 = mem[address + 1];
-		    Bit#(32) val = {val2, val1};
+		    Bit#(16) val = {val2, val1};
 			return val;  
 		endmethod
 		

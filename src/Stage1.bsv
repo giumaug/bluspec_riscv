@@ -4,7 +4,7 @@ package Stage1;
 	import Cache::*;
 	import PipeRegs::*;
 	
-	module mkStage1 #(IfId ifId, Wire#(Bool) bTaken, Wire(Bit#(32)) bPc, Wire#(Bool) stall) (Empty);
+	module mkStage1 #(IfId ifId, Wire#(Bool) bTaken, Wire#(Bit#(32)) bPc, Wire#(Bool) stall) (Empty);
 		Integer payloadSize =  `PAYLOAD_SIZE;
 		Integer size = `INST_CACHE_SIZE;
 		Integer payload[payloadSize];
