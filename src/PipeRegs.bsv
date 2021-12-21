@@ -39,6 +39,8 @@ package PipeRegs;
 		method Action wAluOut(Bit#(32) _aluOut);
 		method Bit#(7) rOpcode();
 		method Action wOpcode(Bit#(7) _opcode);
+		method Bit#(3) rFunc3();
+		method Action wFunc3(Bit#(3) _func3);
 		method Bit#(1) rOpType();
 		method Action wOpType(Bit#(1) _opType);
 	endinterface: ExMem
@@ -166,6 +168,7 @@ package PipeRegs;
 		Reg#(Bit#(5)) rdNum <- mkReg(0);
 		Reg#(Bit#(32)) aluOut <- mkReg(0);
 		Reg#(Bit#(7)) opcode <- mkReg(0);
+		Reg#(Bit#(3)) func3 <- mkReg(0);
 		Reg#(Bit#(1)) opType <- mkReg(0);
 		
 		method Bit#(32) rRs1();
@@ -206,6 +209,14 @@ package PipeRegs;
 		
 		method Action wOpcode(Bit#(7) _opcode);
 			opcode <= _opcode;
+		endmethod
+		
+		method Bit#(3) rFunc3();
+			return func3;
+		endmethod
+		
+		method Action wFunc3(Bit#(3) _func3);
+			func3 <= _func3;
 		endmethod
 		
 		method Bit#(1) rOpType();

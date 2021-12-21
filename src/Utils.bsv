@@ -17,4 +17,10 @@ package Utils;
 		Bit#(20) imm = {imm4, imm3, imm2, imm1};
 		return imm;
 	endfunction
+	
+	function Bool signedCompare(Bit#(32) op1, Bit#(32) op2);
+		UInt#(32) uOp1 = unpack(zeroExtend(op1));
+		UInt#(32) uOp2 = unpack(zeroExtend(op2));
+		return uOp1 > uOp2;
+	endfunction
 endpackage

@@ -13,15 +13,17 @@ package Stage1;
 	
 		Cache cache <- mkCache(payload, payloadSize, size);
 		Reg#(Bit#(32)) pc <- mkReg(`BOOT_ADDRESS);
-		
+	
 		rule fetch (stall == False);
 			Bit#(32) instr = cache.read32(pc);
 			if (bTaken) begin
+				$display("111");
 				pc <= bPc;
 				ifId.wPc(0);
 				ifId.wInstr(0);
 			end	
 			else begin
+				$display("2222");
 				//Branch wants current pc.It is ok because increment applies at the next clock.
 				pc <= pc + 4;
 				ifId.wPc(pc);

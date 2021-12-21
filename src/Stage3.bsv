@@ -7,17 +7,17 @@ package Stage3;
 	
 		rule execute;
 			Bit#(32) pc = idEx.rPc();
-			Int#(32) rs1 = unpack(signExtend(idEx.rRs1()));
-			Int#(32) rs2 = unpack(signExtend(idEx.rRs2()));
-			Int#(32) imm12 = unpack(signExtend(idEx.rImm12()));
-			UInt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
-			UInt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
-			UInt#(32) uImm12 = unpack(zeroExtend(idEx.rImm12()));
+			Bit#(32) rs1 = signExtend(idEx.rRs1());
+			Bit#(32) rs2 = signExtend(idEx.rRs2());
+			Bit#(32) imm12 = signExtend(idEx.rImm12());
+			//UInt#(32) uRs1 = unpack(zeroExtend(idEx.rRs1()));
+			//UInt#(32) uRs2 = unpack(zeroExtend(idEx.rRs2()));
+			//UInt#(32) uImm12 = unpack(zeroExtend(idEx.rImm12()));
 			Bit#(7) opcode = idEx.rOpcode();
 			Bit#(3) func3 = idEx.rFunc3();
 			Bit#(7) func7 = idEx.rFunc7();
-			Int#(32) aluOut;
-			Bit#(1) opType;
+			Bit#(32) aluOut = 0;
+			Bit#(1) opType = 0;
 			Bit#(5) shiftImm = idEx.rImm12()[4:0];
 			Bit#(5) shiftReg = idEx.rRs2()[4:0];
 		
@@ -33,7 +33,8 @@ package Stage3;
 							else aluOut = 0;
 						end
 						`SLTIU: begin
-							if (uRs1 < uImm12) aluOut = 1;
+							//if (uRs1 < uImm12) aluOut = 1;
+							if (!signedCompare(rs1, imm12)) aluOut = 1;
 							else aluOut = 0; 
 						end
 						`ANDI: begin
@@ -50,7 +51,7 @@ package Stage3;
 						end
 						`SRLISRAI: begin
 							if (func7 == `SRLI)	aluOut = rs1 >> shiftImm;
-							else if (func7 == `SRAI) aluOut = (rs1 >> shiftImm) | unpack({idEx.rRs1()[31:31], 31'b0});
+							else if (func7 == `SRAI) aluOut = (rs1 >> shiftImm) | {idEx.rRs1()[31:31], 31'b0};
 						end
 					endcase
 				end
@@ -66,7 +67,8 @@ package Stage3;
 							else aluOut = 0;
 						end
 						`SLTU: begin
-							if (uRs1 < uRs2) aluOut = 1;
+							//if (uRs1 < uRs2) aluOut = 1;
+							if (!signedCompare(rs1, rs2)) aluOut = 1;
 							else aluOut = 0;
 						end
 						`AND: begin
@@ -83,26 +85,26 @@ package Stage3;
 						end
 						`SRLSRA: begin
 							if (func7 == `SRL) aluOut = rs1 >> shiftReg;
-							else if (func7 == `SRA) aluOut = (rs1 >> shiftReg) | unpack({idEx.rRs1()[31:31], 31'b0});
+							else if (func7 == `SRA) aluOut = (rs1 >> shiftReg) | {idEx.rRs1()[31:31], 31'b0};
 						end
 					endcase
 				end
 				`JAL: begin
 					opType = 0;
-					aluOut = unpack(idEx.rPc()) + 4;
+					aluOut = idEx.rPc() + 4;
 				end
 				
 				`JALR: begin
 					opType = 0;
-					aluOut = unpack(idEx.rPc()) + 4;
+					aluOut = idEx.rPc() + 4;
 				end
 				`LUI: begin
 					opType = 0;
-					aluOut = unpack(idEx.rImm20 << 12);--------------qui!!!!!
+					aluOut = {(idEx.rImm20 << 12), 12'b0};
 				end
 				`AUIPC: begin
 					opType = 0;
-					aluOut = {unpack((idEx.rImm20 << 12)), 12'b0} + pc;
+					aluOut = {(idEx.rImm20 << 12), 12'b0} + pc;
 				end
 				`LOAD: begin
 					opType = 1;

@@ -1,6 +1,7 @@
 package Stage4;
 
 	`include "Constants.defines"
+	import Cache::*;
 	import Utils::*;
 	import PipeRegs::*;
 	
@@ -12,30 +13,34 @@ package Stage4;
 		Cache cache <- mkCache(payload, payloadSize, size);
 		
 		rule memAcess;
-			Bit#(32) aluOut = pack(exMem.rAluOut(aluOut));
-			Bit#(32) memOut;
+			Bit#(32) rs2 = signExtend(exMem.rRs2());
+			Bit#(32) aluOut = exMem.rAluOut();
+			Bit#(32) memOut = 0;
+			Bit#(7) opcode = exMem.rOpcode();
+			Bit#(3) func3 = exMem.rFunc3();
 			case (opcode)
 				`LOAD: begin
 					Bit#(32) val = cache.read32(aluOut);
-					case (opcode)
+					case (func3)
 						`LB: begin
-							memOut <= signExtend(val[7:0]);
+							memOut = signExtend(val[7:0]);
 						end
 						`LH: begin
-							memOut <= signExtend(val[15:0]);
+							memOut = signExtend(val[15:0]);
 						end
 						`LW: begin
-							memOut <= val;
+							memOut = val;
 						end
 						`LBU: begin
-							memOut <= zeroExtend(val[7:0]);
+							memOut = zeroExtend(val[7:0]);
 						end
 						`LHU: begin
-							memOut <= zeroExtend(val[15:0]);
-						end	
+							memOut = zeroExtend(val[15:0]);
+						end
+					endcase	
 				end
 				`STORE: begin
-					case (opcode)
+					case (func3)
 						`SB: begin
 							 cache.write8(aluOut, rs2[7:0]);
 						end
@@ -45,12 +50,13 @@ package Stage4;
 						`SW: begin
 							cache.write32(aluOut, rs2);
 						end
+					endcase
 				end
 			endcase
 			
-			memWb.wRdNum(memEx.rRdNum());
+			memWb.wRdNum(exMem.rRdNum());
 			memWb.wMemOut(memOut);
-			memWOpType(memEx.rOpType());
+			memWb.wOpType(exMem.rOpType());
 		endrule
 	endmodule: mkStage4
 endpackage

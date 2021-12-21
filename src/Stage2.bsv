@@ -25,22 +25,22 @@ package Stage2;
 			//Int#(11) instr = {func, opcode};
 			Bit#(12) imm12 = rImm12(word);
 			Bit#(20) imm20 = rImm20(word);
-			Bool _stall;
+			//Bool _stall;
 			
 			regFile.write(rdNum, rd);
-			_stall = dataHazardUnit.doStall(opcode, rs1Num, rs2Num);
+			//_stall = dataHazardUnit.doStall(opcode, rs1Num, rs2Num);
 			if (stall == False) begin
 				//JAL AND JALR: https://stackoverflow.com/questions/59150608/offset-address-for-jal-and-jalr-instrctions-in-risc-v
 				case (opcode)
 					`JAL: begin
 						//Note: if imm is two complement negative number, the positive value is zeroExtend( ~ (imm - 1))
 						Bit#(21) imm21 = {(imm20 << 1), 1'b0};
-						if (imm21[21] == 0) bPc <= ifId.rPc() + extend(imm21);
+						if (imm21[20] == 0) bPc <= ifId.rPc() + extend(imm21);
 						else bPc <= ifId.rPc() - zeroExtend( ~ (imm21 - 1));
 				 		bTaken <= True;
 			    	end
 			   		`JALR: begin
-			     		if (imm12[12] == 0) bPc <= (rs1 + extend(imm12)) & 4094;
+			     		if (imm12[11] == 0) bPc <= (rs1 + extend(imm12)) & 4094;
 			     		else bPc <= (rs1 - zeroExtend( ~ (imm12 - 1))) & 4094;
 			        	bTaken <= True;
 			    	end
@@ -78,7 +78,7 @@ package Stage2;
 			
 				idEx.wPc(pc);
 				idEx.wRs1(rs1);
-				idEx.wRs1(rs2);
+				idEx.wRs2(rs2);
 				idEx.wRdNum(rdNum);
 				idEx.wOpcode(opcode);
 				idEx.wFunc3(func3);
@@ -89,14 +89,23 @@ package Stage2;
 			else begin
 				idEx.wPc(0);
 				idEx.wRs1(0);
-				idEx.wRs1(0);
+				idEx.wRs2(0);
 				idEx.wRdNum(0);
 				idEx.wOpcode(`OPIMM);
 				idEx.wFunc3(`ADDI);
 				idEx.wImm12(0);
 				idEx.wImm20(0);
 			end
-			stall <= _stall;
+			//stall <= _stall;
+		endrule
+		
+		rule doStall;
+			Bit#(32) word = ifId.rInstr();
+			Bit#(7) opcode = word[6:0]; 
+			Bit#(5) rs1Num = word[19:15]; 
+			Bit#(5) rs2Num = word[24:20];
+			
+			stall <= dataHazardUnit.doStall(opcode, rs1Num, rs2Num);
 		endrule
 	endmodule: mkStage2
 endpackage

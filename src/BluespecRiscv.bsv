@@ -10,30 +10,30 @@ package BluespecRiscv;
 
 	(*synthesize*)
 	module mkRiscv(Empty);
-        Reg#(int) counter <- mkReg (0);
 		Wire#(Bool) bTaken <- mkWire(); 
-		Wire#(Bit#(32)) bPc <- mkWrire();
-		Wire#(Bit#(32)) rd <- mkWrire();
-		Wire#(Bool) stall <- mkWire(False);
+		Wire#(Bit#(32)) bPc <- mkWire();
+		Wire#(Bit#(32)) rd <- mkWire();
+		Wire#(Bool) stall <- mkWire();
+		Reg#(int) counter <-mkReg(0);
 		
 		IfId ifId <- mkIfId();
 		IdEx idEx <- mkIdEx();
 		ExMem exMem <- mkExMem();
-		MemWb memWb <- mkMemWb();
-		
+		MemWb memWb <- mkMemWb();	
+		DataHazardUnit dataHazardUnit <- mkDataHazardUnit(idEx, exMem, memWb);
 		mkStage1(ifId, bTaken, bPc, stall);
-		mkStage2(ifId, idEx, bTaken, bPc, rd, mkDataHazardUnit, stall);
+		mkStage2(ifId, idEx, bTaken, bPc, rd, dataHazardUnit, stall);
 		mkStage3(idEx, exMem);
 		mkStage4(exMem, memWb);
 		mkStage5(memWb, rd);
-		mkDataHazardUnit(idEx, exMem, memWb);
 		
 		rule testbench;
+			counter <= counter + 1;
 			Bit#(32) pc =  ifId.rPc();
 			$display("pc is = %0d", pc);
 			$display("instruction is = %0d", ifId.rInstr());
 			
-			if (pc >= 10) $finish (0);
+			if (counter >= 10) $finish (0);
 		endrule
 	endmodule: mkRiscv
 endpackage

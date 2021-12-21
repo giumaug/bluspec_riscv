@@ -7,10 +7,10 @@ package Stage5;
 	module mkStage5 #(MemWb memWb, Wire#(Bit#(32)) rd) (Empty);
 	
 	rule writeBack;
-		Bit#(32) rd;
-		Bit#(1) opType = memWb.rOptype();
-		if (opType == 0) rd <= memWb.rAluOut();
-		else rd <= memWb.rMemOut();
+		Bit#(32) _rd = 0;
+		Bit#(1) opType = memWb.rOpType();
+		if (opType == 0) _rd = memWb.rAluOut();
+		else _rd = memWb.rMemOut();
 		rd <= _rd;
 	endrule
 	

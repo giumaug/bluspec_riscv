@@ -11,11 +11,15 @@ package DataHazardUnit;
 	module mkDataHazardUnit #(IdEx idEx, ExMem exMem, MemWb memWb) (DataHazardUnit);
 	
 		function Bool checkHazard(Bit#(5) regNum);
-			return (regNum == idEx.rRdNum() || regNum == exMem.rRdNum() || regNum == memWb.rRdNum());
+			Bool stall = False;
+			stall = (regNum == idEx.rRdNum() || regNum == exMem.rRdNum() || regNum == memWb.rRdNum());
+			if (stall == False) $display("stall is false");
+			if (stall == True) $display("stall is false");
+			return stall;
 		endfunction
 	
 		method Bool doStall(Bit#(7) opcode, Bit#(5) rs1, Bit#(5) rs2);
-			Bool stall;
+			Bool stall = False;
 			case (opcode)
 			   	`JALR: begin
 			     	stall = checkHazard(rs1);
