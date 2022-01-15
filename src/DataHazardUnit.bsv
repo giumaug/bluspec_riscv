@@ -11,11 +11,8 @@ package DataHazardUnit;
 	module mkDataHazardUnit #(IdEx idEx, ExMem exMem, MemWb memWb) (DataHazardUnit);
 	
 		function Bool checkHazard(Bit#(5) regNum);
-			Bool stall = False;
-			stall = (regNum == idEx.rRdNum() || regNum == exMem.rRdNum() || regNum == memWb.rRdNum());
-			if (stall == False) $display("stall is false");
-			if (stall == True) $display("stall is false");
-			return stall;
+			return  regNum != 0 && (regNum == idEx.rRdNum() || regNum == exMem.rRdNum() || regNum == memWb.rRdNum());
+			//return False;
 		endfunction
 	
 		method Bool doStall(Bit#(7) opcode, Bit#(5) rs1, Bit#(5) rs2);
@@ -25,19 +22,19 @@ package DataHazardUnit;
 			     	stall = checkHazard(rs1);
 			    end
 				`BRANCH: begin
-			     	stall = checkHazard(rs1) && checkHazard(rs2);
+			     	stall = checkHazard(rs1) || checkHazard(rs2);
 				end
 				`OPIMM: begin
 					stall = checkHazard(rs1);
 				end
 				`OP: begin
-					stall = checkHazard(rs1) && checkHazard(rs2);
+					stall = checkHazard(rs1) || checkHazard(rs2);
 				end
 				`LOAD: begin
 					stall = checkHazard(rs1);
 				end
 				`STORE: begin
-					stall = checkHazard(rs1);
+					stall = checkHazard(rs1) || checkHazard(rs2);
 				end
 			endcase
 			return stall;

@@ -26,6 +26,9 @@ package PipeRegs;
 		method Action wFunc3(Bit#(3) _func3);
 		method Bit#(7) rFunc7();
 		method Action wFunc7(Bit#(7) _func7);
+		//Only debug
+		method Bit#(32) rInstr();
+		method Action wInstr(Bit#(32) _instr);
 	endinterface: IdEx
 	
 	interface ExMem;
@@ -43,6 +46,9 @@ package PipeRegs;
 		method Action wFunc3(Bit#(3) _func3);
 		method Bit#(1) rOpType();
 		method Action wOpType(Bit#(1) _opType);
+		//Only debug
+		method Bit#(32) rInstr();
+		method Action wInstr(Bit#(32) _instr);
 	endinterface: ExMem
 	
 	interface MemWb;
@@ -54,6 +60,9 @@ package PipeRegs;
 		method Action wAluOut(Bit#(32) _aluOut);
 		method Bit#(1) rOpType();
 		method Action wOpType(Bit#(1) _opType);
+		//Only debug
+		method Bit#(32) rInstr();
+		method Action wInstr(Bit#(32) _instr);
 	endinterface: MemWb
 	
 	module mkIfId(IfId);
@@ -88,6 +97,8 @@ package PipeRegs;
 		Reg#(Bit#(7)) opcode <- mkReg(0);
 		Reg#(Bit#(3)) func3 <- mkReg(0);
 		Reg#(Bit#(7)) func7 <- mkReg(0);
+		//Only debug
+		Reg#(Bit#(32)) instr <- mkReg(0);
 		
 		method Bit#(32) rPc();
 			return pc;
@@ -160,6 +171,15 @@ package PipeRegs;
 		method Action wFunc7(Bit#(7) _func7);
 			func7 <= _func7;
 		endmethod
+		
+		//Only debug
+		method Bit#(32) rInstr();
+			return instr;
+		endmethod
+		
+		method Action wInstr(Bit#(32) _instr);
+			instr <= _instr;
+		endmethod
 	endmodule: mkIdEx
 		
 	module mkExMem(ExMem);
@@ -170,6 +190,8 @@ package PipeRegs;
 		Reg#(Bit#(7)) opcode <- mkReg(0);
 		Reg#(Bit#(3)) func3 <- mkReg(0);
 		Reg#(Bit#(1)) opType <- mkReg(0);
+		//Only debug
+		Reg#(Bit#(32)) instr <- mkReg(0);
 		
 		method Bit#(32) rRs1();
 			return rs1;
@@ -226,6 +248,15 @@ package PipeRegs;
 		method Action wOpType(Bit#(1) _opType);
 			opType <= _opType;
 		endmethod
+		
+		//Only debug
+		method Bit#(32) rInstr();
+			return instr;
+		endmethod
+		
+		method Action wInstr(Bit#(32) _instr);
+			instr <= _instr;
+		endmethod
 	endmodule: mkExMem
 	
 	module mkMemWb(MemWb);
@@ -233,6 +264,8 @@ package PipeRegs;
 		Reg#(Bit#(5)) rdNum <- mkReg(0);
 		Reg#(Bit#(32)) aluOut <- mkReg(0);
 		Reg#(Bit#(1)) opType <- mkReg(0);
+		//Only debug
+		Reg#(Bit#(32)) instr <- mkReg(0);
 		
 		method Bit#(32) rMemOut();
 			return memOut;
@@ -264,6 +297,15 @@ package PipeRegs;
 		
 		method Action wOpType(Bit#(1) _opType);
 			opType <= _opType;
+		endmethod
+		
+		//Only debug
+		method Bit#(32) rInstr();
+			return instr;
+		endmethod
+		
+		method Action wInstr(Bit#(32) _instr);
+			instr <= _instr;
 		endmethod
 	endmodule: mkMemWb
 endpackage
