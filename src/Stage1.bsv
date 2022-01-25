@@ -13,6 +13,8 @@ package Stage1;
 	
 		Cache cache <- mkCache(payload, payloadSize, size, `INST_CACHE_OFFSET);
 		Reg#(Bit#(32)) pc <- mkReg(`BOOT_ADDRESS);
+		//Only debug
+		Reg#(Bit#(32)) instrNum <- mkReg(0);
 		
 		rule fetch; //rimettere condizione
 			$display("---begin fetch---");
@@ -20,6 +22,7 @@ package Stage1;
 			
 			if (stall == False) begin
 				instr = cache.read32(pc);
+				instrNum <= instrNum + 1;
 				if (bTaken) begin
 					pc <= bPc;
 					ifId.wPc(0);
@@ -39,6 +42,7 @@ package Stage1;
 			$display("stall is %d ", stall);
 			$display("instr is %0h ", instr);
 			$display("pc is %0h ", pc);
+			$display("instrNum is %0d ", instrNum);
 			$display("---end fetch---");
 		endrule
 	endmodule: mkStage1

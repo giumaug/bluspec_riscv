@@ -35,10 +35,11 @@ package BluespecRiscv;
 			Bit#(32) pc =  ifId.rPc();
 			//$display("---begin testbench---");
 			//$display("pc is = %0d", pc);
+			//$display("counter is = %0d", counter);
 			//$display("instruction is = %0h", ifId.rInstr());
 			//$display("---end testbench---");
 			
-			if (counter >= 100) $finish (0);
+			if (counter >= 3000) $finish (0);
 		endrule
 	endmodule: mkRiscv
 endpackage

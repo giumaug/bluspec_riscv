@@ -6,9 +6,11 @@ package Stage4;
 	import PipeRegs::*;
 	
 	module mkStage4 #(ExMem exMem, MemWb memWb) (Empty);
-		Integer payloadSize = 0;
+		Integer payloadSize =  `DATA_PAYLOAD_SIZE;
 		Integer size = `DATA_CACHE_SIZE;
-		Integer payload[1];
+		Integer payload[payloadSize];
+        //Expand payload here
+        `DATA_PAYLOAD
 	
 		Cache cache <- mkCache(payload, payloadSize, size, `DATA_CACHE_OFFSET);
 		
@@ -77,6 +79,7 @@ package Stage4;
 			//Only debug
 			memWb.wInstr(exMem.rInstr());
 			$display("instr is %0h ", exMem.rInstr());
+			if (exMem.rInstr() == 'h2010113) cache.dumpMem();
 			$display("---end memAccess---");
 		endrule
 	endmodule: mkStage4

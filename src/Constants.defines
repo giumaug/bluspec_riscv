@@ -1,13 +1,14 @@
-`define INST_CACHE_SIZE		'h190
+`define INST_CACHE_SIZE		'h168
 `define INST_CACHE_OFFSET	'h0
-`define DATA_CACHE_SIZE		'h63
+`define DATA_CACHE_SIZE		'h100
 `define DATA_CACHE_OFFSET	'h168
 
 `define BOOT_ADDRESS	'h12c
-//We need to take in cosideration offset with  base stack address (63h+168h)
-`define STACK_ADDRESS	'h1cb 
+//We need to take in cosideration offset with  base stack address (100h+168h)
+`define STACK_ADDRESS	'h268
+`define LED_ADDRESS	'hffff
 
-`define PAYLOAD_SIZE 400
+`define PAYLOAD_SIZE 360
 `define PAYLOAD payload[0]   = 'h13; \
                 payload[1]   = 'h01; \
                 payload[2]   = 'h01; \
@@ -367,151 +368,38 @@
                 payload[356] = 'h67; \
                 payload[357] = 'h80; \
                 payload[358] = 'h00; \
-                payload[359] = 'h00; \
-                payload[360] = 'h40; \
-                payload[361] = 'h00; \
-                payload[362] = 'h00; \
-                payload[363] = 'h00; \
-                payload[364] = 'h22; \
-                payload[365] = 'h00; \
-                payload[366] = 'h00; \
-                payload[367] = 'h00; \
-                payload[368] = 'h19; \
-                payload[369] = 'h00; \
-                payload[370] = 'h00; \
-                payload[371] = 'h00; \
-                payload[372] = 'h0c; \
-                payload[373] = 'h00; \
-                payload[374] = 'h00; \
-                payload[375] = 'h00; \
-                payload[376] = 'h16; \
-                payload[377] = 'h00; \
-                payload[378] = 'h00; \
-                payload[379] = 'h00; \
-                payload[380] = 'h0b; \
-                payload[381] = 'h00; \
-                payload[382] = 'h00; \
-                payload[383] = 'h00; \
-                payload[384] = 'h5a; \
-                payload[385] = 'h00; \
-                payload[386] = 'h00; \
-                payload[387] = 'h00; \
-                payload[388] = 'h00; \
-                payload[389] = 'h00; \
-                payload[390] = 'h00; \
-                payload[391] = 'h00; \
-                payload[392] = 'h00; \
-                payload[393] = 'h00; \
-                payload[394] = 'h00; \
-                payload[395] = 'h00; \
-                payload[396] = 'h00; \
-                payload[397] = 'h00; \
-                payload[398] = 'h00;
+                payload[359] = 'h00;
                 
-/*                
-                payload[399] = 'h00; \
-                payload[400] = 'h00; \
-                payload[401] = 'h00; \
-                payload[402] = 'h00; \
-                payload[403] = 'h00; \
-                payload[404] = 'h00; \
-                payload[405] = 'h00; \
-                payload[406] = 'h00; \
-                payload[407] = 'h00; \
-                payload[408] = 'h00; \
-                payload[409] = 'h00; \
-                payload[410] = 'h00; \
-                payload[411] = 'h00; \
-                payload[412] = 'h00; \
-                payload[413] = 'h00; \
-                payload[414] = 'h00; \
-                payload[415] = 'h00; \
-                payload[416] = 'h00; \
-                payload[417] = 'h00; \
-                payload[418] = 'h00; \
-                payload[419] = 'h00; \
-                payload[420] = 'h00; \
-                payload[421] = 'h00; \
-                payload[422] = 'h00; \
-                payload[423] = 'h00; \
-                payload[424] = 'h00; \
-                payload[425] = 'h00; \
-                payload[426] = 'h00; \
-                payload[427] = 'h00; \
-                payload[428] = 'h00; \
-                payload[429] = 'h00; \
-                payload[430] = 'h00; \
-                payload[431] = 'h00; \
-                payload[432] = 'h00; \
-                payload[433] = 'h00; \
-                payload[434] = 'h00; \
-                payload[435] = 'h00; \
-                payload[436] = 'h00; \
-                payload[437] = 'h00; \
-                payload[438] = 'h00; \
-                payload[439] = 'h00; \
-                payload[440] = 'h00; \
-                payload[441] = 'h00; \
-                payload[442] = 'h00; \
-                payload[443] = 'h00; \
-                payload[444] = 'h00; \
-                payload[445] = 'h00; \
-                payload[446] = 'h00; \
-                payload[447] = 'h00; \
-                payload[448] = 'h00; \
-                payload[449] = 'h00; \
-                payload[450] = 'h00; \
-                payload[451] = 'h00; \
-                payload[452] = 'h00; \
-                payload[453] = 'h00; \
-                payload[454] = 'h00; \
-                payload[455] = 'h00; \
-                payload[456] = 'h00; \
-                payload[457] = 'h00; \
-                payload[458] = 'h00; \
-                payload[459] = 'h00; \
-                payload[460] = 'h00; \
-                payload[461] = 'h00; \
-                payload[462] = 'h00; \
-                payload[463] = 'h00; \
-                payload[464] = 'h00; \
-                payload[465] = 'h00; \
-                payload[466] = 'h00; \
-                payload[467] = 'h00; \
-                payload[468] = 'h00; \
-                payload[469] = 'h00; \
-                payload[470] = 'h00; \
-                payload[471] = 'h00; \
-                payload[472] = 'h00; \
-                payload[473] = 'h00; \
-                payload[474] = 'h00; \
-                payload[475] = 'h00; \
-                payload[476] = 'h00; \
-                payload[477] = 'h00; \
-                payload[478] = 'h00; \
-                payload[479] = 'h00; \
-                payload[480] = 'h00; \
-                payload[481] = 'h00; \
-                payload[482] = 'h00; \
-                payload[483] = 'h00; \
-                payload[484] = 'h00; \
-                payload[485] = 'h00; \
-                payload[486] = 'h00; \
-                payload[487] = 'h00; \
-                payload[488] = 'h00; \
-                payload[489] = 'h00; \
-                payload[490] = 'h00; \
-                payload[491] = 'h00; \
-                payload[492] = 'h00; \
-                payload[493] = 'h00; \
-                payload[494] = 'h00; \
-                payload[495] = 'h00; \
-                payload[496] = 'h00; \
-                payload[497] = 'h00; \
-                payload[498] = 'h00; \
-                payload[499] = 'h00;
-*/
-                
+`define DATA_PAYLOAD_SIZE 28
+`define DATA_PAYLOAD payload[0] =  'h40; \
+                     payload[1] =  'h00; \
+                     payload[2] =  'h00; \
+                     payload[3] =  'h00; \
+                     payload[4] =  'h22; \
+                     payload[5] =  'h00; \
+                     payload[6] =  'h00; \
+                     payload[7] =  'h00; \
+                     payload[8] =  'h19; \
+                     payload[9] =  'h00; \
+                     payload[10] = 'h00; \
+                     payload[11] = 'h00; \
+                     payload[12] = 'h0c; \
+                     payload[13] = 'h00; \
+                     payload[14] = 'h00; \
+                     payload[15] = 'h00; \
+                     payload[16] = 'h16; \
+                     payload[17] = 'h00; \
+                     payload[18] = 'h00; \
+                     payload[19] = 'h00; \
+                     payload[20] = 'h0b; \
+                     payload[21] = 'h00; \
+                     payload[22] = 'h00; \
+                     payload[23] = 'h00; \
+                     payload[24] = 'h5a; \
+                     payload[25] = 'h00; \
+                     payload[26] = 'h00; \
+                     payload[27] = 'h00;
+      
 //Instruction constants
 `define BRANCH 		7'b1100011
 `define OPIMM   	7'b0010011
