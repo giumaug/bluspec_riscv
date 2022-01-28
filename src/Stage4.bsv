@@ -79,7 +79,7 @@ package Stage4;
 			//Only debug
 			memWb.wInstr(exMem.rInstr());
 			$display("instr is %0h ", exMem.rInstr());
-			if (exMem.rInstr() == 'h2010113) cache.dumpMem();
+			if (exMem.rInstr() == 'h6f) cache.dumpMem();
 			$display("---end memAccess---");
 		endrule
 	endmodule: mkStage4
