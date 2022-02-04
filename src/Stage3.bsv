@@ -6,7 +6,7 @@ package Stage3;
 	module mkStage3 #(IdEx idEx, ExMem exMem) (Empty);
 	
 		rule execute;
-			$display("---begin execute---");
+			`DISPLAY("---begin execute---")
 			Bit#(32) pc = idEx.rPc();
 			Bit#(32) rs1 = signExtend(idEx.rRs1());
 			Bit#(32) rs2 = signExtend(idEx.rRs2());
@@ -27,37 +27,37 @@ package Stage3;
 					opType = 0;
 					case (func3)
 						`ADDI: begin
-							$display("instruction ADDI");
+							`DISPLAY("instruction ADDI")
 							aluOut = rs1 + imm12;
 						end
 						`SLTI: begin
-							$display("instruction SLTI");
+							`DISPLAY("instruction SLTI")
 							if (rs1 < imm12) aluOut = 1;
 							else aluOut = 0;
 						end
 						`SLTIU: begin
-							$display("instruction SLTIU");
+							`DISPLAY("instruction SLTIU")
 							if (!signedCompare(rs1, imm12)) aluOut = 1;
 							else aluOut = 0; 
 						end
 						`ANDI: begin
-							$display("instruction ANDI");
+							`DISPLAY("instruction ANDI")
 							aluOut = rs1 & imm12;
 						end
 						`ORI: begin
-							$display("instruction ORI");
+							`DISPLAY("instruction ORI")
 							aluOut = rs1 | imm12;
 						end
 						`XORI: begin
-							$display("instruction XORI");
+							`DISPLAY("instruction XORI")
 							aluOut = rs1 ^ imm12;
 						end
 						`SLLI: begin
-							$display("instruction SLLI");
+							`DISPLAY("instruction SLLI")
 							aluOut = rs1 << shiftImm;
 						end
 						`SRLISRAI: begin
-							$display("instruction SRLISRAI");
+							`DISPLAY("instruction SRLISRAI")
 							if (func7 == `SRLI)	aluOut = rs1 >> shiftImm;
 							else if (func7 == `SRAI) aluOut = (rs1 >> shiftImm) | {idEx.rRs1()[31:31], 31'b0};
 						end
@@ -67,78 +67,78 @@ package Stage3;
 				    opType = 0;
 					case (func3)
 						`ADDSUB: begin
-							$display("instruction ADDSUB");
+							`DISPLAY("instruction ADDSUB")
 							if (func7 == `ADD) aluOut = rs1 + rs2;
 						    else if (func7 == `SUB) aluOut = rs1 - rs2;
 						end
 						`SLT: begin
-							$display("instruction SLT");
+							`DISPLAY("instruction SLT")
 							if (rs1 < rs2) aluOut = 1;
 							else aluOut = 0;
 						end
 						`SLTU: begin
-							$display("instruction SLTU");
+							`DISPLAY("instruction SLTU")
 							if (!signedCompare(rs1, rs2)) aluOut = 1;
 							else aluOut = 0;
 						end
 						`AND: begin
-							$display("instruction AND");
+							`DISPLAY("instruction AND")
 							aluOut = rs1 & rs2;
 						end
 						`OR: begin
-							$display("instruction OR");
+							`DISPLAY("instruction OR")
 							aluOut = rs1 | rs2;
 						end
 						`XOR: begin
-							$display("instruction XOR");
+							`DISPLAY("instruction XOR")
 							aluOut = rs1 ^ rs2;
 						end
 						`SLL: begin
-							$display("instruction SLL");
+							`DISPLAY("instruction SLL")
 							aluOut = rs1 << shiftReg;
 						end
 						`SRLSRA: begin
-							$display("instruction SRLSRA");
+							`DISPLAY("instruction SRLSRA")
 							if (func7 == `SRL) aluOut = rs1 >> shiftReg;
 							else if (func7 == `SRA) aluOut = (rs1 >> shiftReg) | {idEx.rRs1()[31:31], 31'b0};
 						end
 					endcase
 				end
 				`JAL: begin
-					$display("instruction JAL");
+					`DISPLAY("instruction JAL")
 					opType = 0;
 					aluOut = idEx.rPc() + 4;
 				end
 				`JALR: begin
-					$display("instruction JALR");
+					`DISPLAY("instruction JALR")
 					opType = 0;
 					aluOut = idEx.rPc() + 4;
 				end
 				`LUI: begin
-					$display("instruction LUI");
+					`DISPLAY("instruction LUI")
 					opType = 0;
 					aluOut = {(idEx.rImm20 << 12), 12'b0};
 				end
 				`AUIPC: begin
-					$display("instruction AUIPC");
+					`DISPLAY("instruction AUIPC")
 					opType = 0;
 					aluOut = {(idEx.rImm20 << 12), 12'b0} + pc;
 				end
 				`LOAD: begin
-					$display("instruction LOAD");
+					`DISPLAY("instruction LOAD")
 					opType = 1;
 					aluOut = rs1 + imm12;
 				end
 				`STORE: begin
-					$display("instruction STORE");
+					`DISPLAY("instruction STORE")
 					opType = 1;
 					aluOut = rs1 + imm12;
 				end		
 			endcase
 			
-			$display("aluOut %d", aluOut);
-			$display("rs1 is %d", rs1);
-			$display("rs2 is %d", rs2);
+			`DISPLAY_VAR("aluOut %d", aluOut)
+			`DISPLAY_VAR("rs1 is %d", rs1)
+			`DISPLAY_VAR("rs2 is %d", rs2)
 			exMem.wAluOut(aluOut);
 			exMem.wRdNum(idEx.rRdNum());
 			exMem.wRs1(idEx.rRs1);
@@ -148,8 +148,8 @@ package Stage3;
 			exMem.wFunc3(func3);
 			//Only debug
 			exMem.wInstr(idEx.rInstr());
-			$display("instr is %0h ", idEx.rInstr());
-			$display("---end execute---");
+			`DISPLAY_VAR("instr is %0h ", idEx.rInstr())
+			`DISPLAY("---end execute---")
 		endrule
 	endmodule: mkStage3
 endpackage

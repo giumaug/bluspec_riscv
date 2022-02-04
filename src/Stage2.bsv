@@ -14,7 +14,7 @@ package Stage2;
 		RegFile regFile <- mkRegFile();
 		
 		rule decode;
-			$display("---begin decode---");
+			`DISPLAY("---begin decode---")
 			Bit#(32) pc = ifId.rPc();
 			Bit#(32) word = ifId.rInstr();
 			Bit#(7) opcode = word[6:0]; 
@@ -48,7 +48,7 @@ package Stage2;
 			     		if (imm12[11] == 0) _bPc = (rs1 + extend(imm12)) & 4094;
 			     		else _bPc = (rs1 - zeroExtend( ~ (imm12 - 1))) & 4094;
 			        	_bTaken = True;
-			        	$display("instruction JALR");
+			        	`DISPLAY("instruction JALR")
 			    	end
 					`BRANCH: begin
 						imm12 = rImm12B(word);
@@ -58,22 +58,22 @@ package Stage2;
 							`BEQ: begin
 								if (rs1 == rs2) _bTaken = True;
 								else _bTaken = False;
-								$display("instruction JALR");
+								`DISPLAY("instruction JALR")
 							end	
 							`BNE: begin
 								if (rs1 != rs2) _bTaken = True;
 								else _bTaken = False;
-								$display("instruction BNE");
+								`DISPLAY("instruction BNE")
 							end
 							`BLT: begin
 								if (rs1 < rs2) _bTaken = True;
 								else _bTaken = False;
-								$display("instruction BLT");
+								`DISPLAY("instruction BLT")
 							end
 							`BLTU: begin
 								if (abs(rs1) < abs(rs2)) _bTaken = True;
 								else _bTaken = False;
-								$display("instruction BLTU");
+								`DISPLAY("instruction BLTU")
 							end
 							`BGE: begin
 								if (rs1 > rs2) _bTaken = True;
@@ -82,7 +82,7 @@ package Stage2;
 							`BGEU: begin
 								if (abs(rs1) > abs(rs2)) _bTaken = True;
 								else _bTaken = False;
-								$display("instruction BGEU");
+								`DISPLAY("instruction BGEU")
 							end
 							//default: bTaken <= False;
 						endcase
@@ -92,20 +92,20 @@ package Stage2;
 						_bTaken = False;
 						_bPc = 0;
 						imm12 = rImm12S(word);
-						$display("instruction STORE");
+						`DISPLAY("instruction STORE")
 					end
 					`LOAD: begin
 						_bTaken = False;
 						_bPc = 0;
 						imm12 = rImm12I(word);
-						$display("instruction LOAD");
+						`DISPLAY("instruction LOAD")
 					end
 					`OPIMM: begin
 						imm12 = rImm12I(word);
-						$display("instruction OPIMM");
+						`DISPLAY("instruction OPIMM")
 					end
 					default: begin
-						$display("instruction DEFAULT");
+						`DISPLAY("instruction DEFAULT")
 						_bTaken = False;
 						_bPc = 0;
 					end
@@ -136,23 +136,23 @@ package Stage2;
 			end
 			//Only debug
 			idEx.wInstr(ifId.rInstr());
-			$display("instr is %0h ", ifId.rInstr());
-			$display("bpc %d", _bPc);
-			$display("bTaken %d", _bTaken);
-			$display("imm12 %d", imm12);
-			$display("imm20 %d", imm20);
-			$display("rs1Num is %d", rs1Num);
-			$display("rs2Num is %d", rs2Num);
-			$display("_rdNum is %d", _rdNum);
-			$display("rd is %d", rd);
-			$display("rdNum is %d", rdNum);
-			$display("rs1 is %d", rs1);
-			$display("rs2 is %d", rs2);
-			$display("---end decode---");
+			`DISPLAY_VAR("instr is %0h ", ifId.rInstr())
+			`DISPLAY_VAR("bpc %d", _bPc)
+			`DISPLAY_VAR("bTaken %d", _bTaken)
+			`DISPLAY_VAR("imm12 %d", imm12)
+			`DISPLAY_VAR("imm20 %d", imm20)
+			`DISPLAY_VAR("rs1Num is %d", rs1Num)
+			`DISPLAY_VAR("rs2Num is %d", rs2Num)
+			`DISPLAY_VAR("_rdNum is %d", _rdNum)
+			`DISPLAY_VAR("rd is %d", rd)
+			`DISPLAY_VAR("rdNum is %d", rdNum)
+			`DISPLAY_VAR("rs1 is %d", rs1)
+			`DISPLAY_VAR("rs2 is %d", rs2)
+			`DISPLAY("---end decode---")
 		endrule
 		
 		rule doStall;
-			$display("---begin doStall---");
+			`DISPLAY("---begin doStall---")
 			Bool _stall;
 			Bit#(32) word = ifId.rInstr();
 			Bit#(7) opcode = word[6:0]; 
@@ -161,14 +161,14 @@ package Stage2;
 			
 			_stall = dataHazardUnit.doStall(opcode, rs1Num, rs2Num);
 			stall <= _stall;
-			$display("instr is %0h ", ifId.rInstr());
-			$display("rs1Num is %d", rs1Num);
-			$display("rs2Num is %d", rs2Num);
-			$display("idEx.rRdNum is %d", idEx.rRdNum());
-			$display("exMem.rRdNum is %d", exMem.rRdNum());
-			$display("memWb.rRdNum is %d", memWb.rRdNum());
-			$display("doStall is %d", _stall);
-			$display("---end doStall---");
+			`DISPLAY_VAR("instr is %0h ", ifId.rInstr())
+			`DISPLAY_VAR("rs1Num is %d", rs1Num)
+			`DISPLAY_VAR("rs2Num is %d", rs2Num)
+			`DISPLAY_VAR("idEx.rRdNum is %d", idEx.rRdNum())
+			`DISPLAY_VAR("exMem.rRdNum is %d", exMem.rRdNum())
+			`DISPLAY_VAR("memWb.rRdNum is %d", memWb.rRdNum())
+			`DISPLAY_VAR("doStall is %d", _stall)
+			`DISPLAY("---end doStall---")
 		endrule
 	endmodule: mkStage2
 endpackage

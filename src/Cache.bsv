@@ -77,15 +77,15 @@ package Cache;
 		    	val = {val4, val3, val2, val1};
 				out[k] = val;
 			end
-			$display("---start dump memory---");
-			$display("val 0 is %0d", out[0]);
-			$display("val 1 is %0d", out[1]);
-			$display("val 2 is %0d", out[2]);
-			$display("val 3 is %0d", out[3]);
-			$display("val 4 is %0d", out[4]);
-			$display("val 5 is %0d", out[5]);
-			$display("val 6 is %0d", out[6]);
-			$display("---end dump memory---");
+			`DISPLAY("---start dump memory---")
+			`DISPLAY_VAR("val 0 is %0d", out[0])
+			`DISPLAY_VAR("val 1 is %0d", out[1])
+			`DISPLAY_VAR("val 2 is %0d", out[2])
+			`DISPLAY_VAR("val 3 is %0d", out[3])
+			`DISPLAY_VAR("val 4 is %0d", out[4])
+			`DISPLAY_VAR("val 5 is %0d", out[5])
+			`DISPLAY_VAR("val 6 is %0d", out[6])
+			`DISPLAY("---end dump memory---")
 		endmethod
 	endmodule: mkCache
 endpackage
