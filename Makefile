@@ -7,6 +7,7 @@ JTAG_TYPE:=JTAG_BSCAN2E
 MOREDEFINES=$(addprefix -D , $(BSC_DEFINES))
 
 %.bo:
+	$(info building $@)
 	@echo $@
 	@echo $(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
 	@$(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<

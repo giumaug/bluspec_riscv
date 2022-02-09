@@ -13,7 +13,7 @@ BSVINCDIR:=.:%/Libraries:src
 
 #BS_VERILOG_LIB:=/opt/bsc/lib/Verilog/
 
-TOP_MODULE:=hello_world
+TOP_MODULE:=mBluespecRiscv
 
 TOP_DIR:=./
 
@@ -21,7 +21,7 @@ TOP_DIR:=./
 
 #XLEN:=64
 
-TOP_BIN=top.bo
+TOP_BIN=BluespecRiscv.bo
 
 #ISA=RV64IMACSU
 
