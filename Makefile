@@ -8,13 +8,14 @@ MOREDEFINES=$(addprefix -D , $(BSC_DEFINES))
 
 %.bo:
 	$(info building $@)
-	@echo $@
+	#@echo $@
+	@echo $<
 	@echo $(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
 	@$(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
 	
 .PHONY: generate_verilog
 generate_verilog:$(BSVBUILDDIR)/$(TOP_BIN)
-	@echo $(BSVBUILDDIR)/$(TOP_BIN)
+	echo $(BSVBUILDDIR)/$(TOP_BIN)
 
 .PHONY: arty_build
 arty_build:	

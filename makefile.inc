@@ -9,7 +9,7 @@ BSCCMD:=bsc -u -verilog -elab -vdir build/hw/verilog -bdir build/hw/intermediate
 #PUT HERE DEFINES
 BSC_DEFINES:=
 
-BSVINCDIR:=.:%/Libraries:src
+BSVINCDIR:=.:%/Libraries:src/
 
 #BS_VERILOG_LIB:=/opt/bsc/lib/Verilog/
 
