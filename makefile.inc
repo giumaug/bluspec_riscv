@@ -13,7 +13,7 @@ BSVINCDIR:=.:%/Libraries:src/
 
 #BS_VERILOG_LIB:=/opt/bsc/lib/Verilog/
 
-TOP_MODULE:=mBluespecRiscv
+TOP_MODULE:=mTop
 
 TOP_DIR:=./
 

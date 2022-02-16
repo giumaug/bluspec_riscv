@@ -1,0 +1,38 @@
+riscv32-unknown-elf-gcc -o sort sort.c
+
+riscv32-unknown-elf-objdump -D sort
+
+/opt/spike/bin/spike --isa=rv32i -d  /opt/pk/riscv32-unknown-elf/bin/pk sort_pk
+
+dentro spike:
+until pc 0 10268
+reg 0 <nome_registro>
+
+
+sp = 7ffffda0
+
+sp = 63 + 168
+
+7ffffda0 - 100 - 168 = 7FFFFB38
+
+7FFFFBD5 -----> offset to add for stack calculation!!!
+
+
+116c0 - 168 = 11558
+
+11558 -----> offset to add for memory calculation!!!
+
+
+su swap x12 ok
+10170
+10174 --> mem 116c8
+
+
+
+
+
+
+
+
+
+

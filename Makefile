@@ -6,10 +6,13 @@ JTAG_TYPE:=JTAG_BSCAN2E
 
 MOREDEFINES=$(addprefix -D , $(BSC_DEFINES))
 
+#TO DEBUG bo target
+#$(info building $@)
+#@echo $@
+#@echo $<
+#@echo $(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
+
 %.bo:
-	$(info building $@)
-	#@echo $@
-	@echo $<
 	@echo $(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
 	@$(BSCCMD) $(MOREDEFINES) -p $(BSVINCDIR) $<
 	
@@ -26,7 +29,17 @@ arty_build:
 		
 .PHONY: program_fpga_jlink
 program_fpga_jlink:
-	$(Vivado_loc) -nojournal -nolog -mode tcl -source tcl/program.tcl
+	vivado -nojournal -nolog -mode tcl -source tcl/program.tcl
+	
+.PHONY: generate_mcs
+generate_mcs: ## Generate the FPGA Configuration Memory file.
+	vivado -nojournal -nolog -mode tcl -source tcl/generate_mcs.tcl
+
+.PHONY: program_mcs
+program_mcs: ## Program the FPGA Configuration Memory in order to use the onboard ftdi jtag chain
+	$(Vivado_loc) -nojournal -nolog -mode tcl -source tcl/program_mcs.tcl
+	echo "Please Disconnect and reconnect Your Arty Board from your PC"
+	echo "After programming reset the device once and run"
 	
 .PHONY: clean
 clean:

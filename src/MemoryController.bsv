@@ -28,6 +28,11 @@ package MemoryController;
 	
 		Cache instrCache <- mkCache(instrPayload, `PAYLOAD_SIZE, instrSize, `INST_CACHE_OFFSET);
 		Cache dataCache <- mkCache(dataPayload, `DATA_PAYLOAD_SIZE, dataSize, `DATA_CACHE_OFFSET);
+		Reg#(Bit#(4)) led_status <-mkReg(`DEFAULT_LED_VALUE);
+		
+		rule led_output;
+			led <= led_status;
+		endrule
 		
 		method Bit#(32) read32(Bit#(32) address, Bit#(1) opType);
 			Bit#(32) val = 0;
@@ -62,7 +67,10 @@ package MemoryController;
 		
 		method Action write8(Bit#(32) address, Bit#(8) value, Bit#(1) opType);
 			if (opType == 0) begin 
-				if (address == `LED_ADDRESS) led <= value[3:0];
+				if (address == `LED_ADDRESS) begin
+					led_status <= value[3:0];
+					`DISPLAY_VAR("changind led status in %d", value)
+				end
 				else dataCache.write8(address, value);
 			end
 			else if (opType == 1) instrCache.write8(address, value);

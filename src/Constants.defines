@@ -12,10 +12,6 @@
 	`define DISPLAY_VAR(arg1, arg2)
 `endif
 
-
-
-
-
 /*----------IN VERILOG IT WORKS OUT IN BSV NO!!!!----------
 `define delim
 `define DISPLAY(A, B=elim) \
@@ -31,10 +27,11 @@
 `define DATA_CACHE_SIZE		'h100
 `define DATA_CACHE_OFFSET	'h1ec //'h154
 
-`define BOOT_ADDRESS	'h12c
+`define BOOT_ADDRESS		'h12c
 //We need to take in cosideration offset with  base stack address (100h+1ech)
-`define STACK_ADDRESS	'h2ec
-`define LED_ADDRESS	'hffff
+`define STACK_ADDRESS		'h2ec
+`define LED_ADDRESS			'hffff
+`define DEFAULT_LED_VALUE	4'b1010
 
 
 /*------------------------------------------------------------------------------

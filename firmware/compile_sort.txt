@@ -1,0 +1,4 @@
+riscv32-unknown-elf-gcc -c sort.c
+riscv32-unknown-elf-ld -T linker.ld -o sort sort.o
+riscv32-unknown-elf-objdump -D sort
+./fix_endianess < dump2.txt > dump_endianess2.txt
