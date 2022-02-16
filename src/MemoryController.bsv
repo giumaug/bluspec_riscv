@@ -42,7 +42,14 @@ package MemoryController;
 		endmethod
 		
 		method Action write32(Bit#(32) address, Bit#(32) value, Bit#(1) opType);
-			if (opType == 0) dataCache.write32(address, value);
+			//if (opType == 0) dataCache.write32(address, value);
+			if (opType == 0) begin 
+				if (address == `LED_ADDRESS) begin
+					led_status <= value[3:0];
+					`DISPLAY_VAR("changind led status in %d", value)
+				end
+				else dataCache.write32(address, value);
+			end
 			else if (opType == 1) instrCache.write32(address, value);
 		endmethod
 		
@@ -66,13 +73,14 @@ package MemoryController;
 		endmethod
 		
 		method Action write8(Bit#(32) address, Bit#(8) value, Bit#(1) opType);
-			if (opType == 0) begin 
-				if (address == `LED_ADDRESS) begin
-					led_status <= value[3:0];
-					`DISPLAY_VAR("changind led status in %d", value)
-				end
-				else dataCache.write8(address, value);
-			end
+//			if (opType == 0) begin 
+//				if (address == `LED_ADDRESS) begin
+//					led_status <= value[3:0];
+//					`DISPLAY_VAR("changind led status in %d", value)
+//				end
+//				else dataCache.write8(address, value);
+//			end
+			if (opType == 0) dataCache.write8(address, value);
 			else if (opType == 1) instrCache.write8(address, value);
 		endmethod
 		
