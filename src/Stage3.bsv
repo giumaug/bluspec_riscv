@@ -117,7 +117,8 @@ package Stage3;
 				`LUI: begin
 					`DISPLAY("instruction LUI")
 					opType = 0;
-					aluOut = {(idEx.rImm20 << 12), 12'b0};
+					aluOut = {idEx.rImm20, 12'b0};
+					`DISPLAY_VAR("idEx.rIMM20=%d", idEx.rImm20)
 				end
 				`AUIPC: begin
 					`DISPLAY("instruction AUIPC")

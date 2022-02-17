@@ -35,6 +35,9 @@ package Stage2;
 			if (stall == False) begin
 				//JAL AND JALR: https://stackoverflow.com/questions/59150608/offset-address-for-jal-and-jalr-instrctions-in-risc-v
 				case (opcode)
+					`LUI: begin
+						imm20 = rImm20I(word);
+					end
 					`JAL: begin
 						//Note: if imm is two complement negative number, the positive value is zeroExtend( ~ (imm - 1))
 						imm20 = rImm20(word);

@@ -21,6 +21,11 @@ package Utils;
 		return imm;
 	endfunction
 	
+	function Bit#(20) rImm20I (Bit#(32) word);
+		Bit#(20) imm = word[31:12];
+		return imm;
+	endfunction
+	
 	function Bit#(20) rImm20 (Bit#(32) word);
 		Bit#(10) imm1 = word[30:21];
 		Bit#(1) imm2 = word[20];

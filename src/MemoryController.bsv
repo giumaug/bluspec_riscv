@@ -46,7 +46,7 @@ package MemoryController;
 			if (opType == 0) begin 
 				if (address == `LED_ADDRESS) begin
 					led_status <= value[3:0];
-					`DISPLAY_VAR("changind led status in %d", value)
+					`DISPLAY_VAR("changing led status in %d", value)
 				end
 				else dataCache.write32(address, value);
 			end

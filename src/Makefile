@@ -18,5 +18,5 @@ all: $(BO)
 #	bsc -sim -e mkRiscv -o $(FILENAME)
 
 clean:
-	rm -f model* mkTop* *.bo *.so *.cxx *.ba *.h
+	rm -f model* BluespecRiscv  *.bo *.so *.cxx *.ba *.h
 
