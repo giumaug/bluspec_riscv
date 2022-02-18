@@ -46,6 +46,12 @@ package BluespecRiscv;
 			`DISPLAY_VAR("led status is %d", _led)
 			Bit#(32) pc =  ifId.rPc();
 			if (counter >= 3000) $finish (0);
+			
+			if (pc == 'h12c || 
+                pc == 'h130 ||
+                pc == 'h134 ) memoryController.write32('hffff, 'b1111, 0);
+            else memoryController.write32('hffff, 'b0000, 0);
+			
 		endrule
 		
 		method Bit#(4) led();
