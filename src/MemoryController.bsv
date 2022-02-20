@@ -17,6 +17,7 @@ package MemoryController;
 		Integer instrPayloadSize =  `PAYLOAD_SIZE;
 		Integer instrSize = `INST_CACHE_SIZE;
 		Integer instrPayload[`PAYLOAD_SIZE];
+		Reg#(Bit#(8)) mem[size]
         //Expand payload here
         `PAYLOAD
         
