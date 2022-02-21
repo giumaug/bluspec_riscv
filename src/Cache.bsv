@@ -12,10 +12,9 @@ package Cache;
 		method Action dumpMem();
 	endinterface: Cache
 	
-	//module mkCache#(parameter Integer payload[], parameter Integer payloadSize, parameter Integer size, parameter Int#(32) offset) (Cache);
-	module mkCache#(Reg#(Bit#(8)) mem[], parameter Int#(32) offset) (Cache);
+	module mkCache#(parameter Integer payload[], parameter Integer payloadSize, parameter Integer size, parameter Int#(32) offset) (Cache);
 		Bit#(32) _offset = pack(offset);
-		//Reg#(Bit#(8)) mem[size];
+		Reg#(Bit#(8)) mem[size];
 		if (payloadSize > 0)
 		begin
 			for (Integer k = 0; k < payloadSize; k = k + 1) mem[k] <- mkReg(fromInteger(payload[k]));

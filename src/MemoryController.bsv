@@ -17,7 +17,6 @@ package MemoryController;
 		Integer instrPayloadSize =  `PAYLOAD_SIZE;
 		Integer instrSize = `INST_CACHE_SIZE;
 		Integer instrPayload[`PAYLOAD_SIZE];
-		Reg#(Bit#(8)) mem[size]
         //Expand payload here
         `PAYLOAD
         
@@ -46,7 +45,8 @@ package MemoryController;
 			//if (opType == 0) dataCache.write32(address, value);
 			if (opType == 0) begin 
 				if (address == `LED_ADDRESS) begin
-					led_status <= value[3:0];
+					//led_status <= value[3:0];
+					led_status <= 4'b0111;
 					`DISPLAY_VAR("changing led status in %d", value)
 				end
 				else dataCache.write32(address, value);
